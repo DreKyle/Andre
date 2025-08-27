@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #4a86e8;
+            outline: none;
+        }
+        
+        .error {
+            color: #d93025;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: #0f9d58;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0fff4;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .requirement-list {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .requirement-item {
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .requirement-item i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .fa-check {
+            color: #0f9d58;
+        }
+        
+        .fa-times {
+            color: #d93025;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2b68d3;
+        }
+
+        
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            pointer-events: none;
+        }
+
+        .input-with-icon input {
+            padding-left: 45px; /* leave space for the icon */
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Create Account</h1>
+            <p>Join our community with a secure account</p>
+        </div>
+        
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" placeholder="Enter your username">
+                </div>
+                <div class="error" id="usernameError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" placeholder="Enter your email">
+                </div>
+                <div class="error" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Create a strong password">
+                    <span class="password-toggle" id="passwordToggle">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+                <div class="error" id="passwordError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                    <span class="password-toggle" id="confirmPasswordToggle">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+                <div class="error" id="confirmPasswordError"></div>
+            </div>
+            
+            <div class="requirement-list">
+                <div class="requirement-item" id="lengthValidation">
+                    <i class="fas fa-times" id="lengthIcon"></i>
+                    <span>At least 8 characters</span>
+                </div>
+                <div class="requirement-item" id="maxLengthValidation">
+                    <i class="fas fa-times" id="maxLengthIcon"></i>
+                    <span>No more than 15 characters</span>
+                </div>
+                <div class="requirement-item" id="uppercaseValidation">
+                    <i class="fas fa-times" id="uppercaseIcon"></i>
+                    <span>At least one uppercase letter (A-Z)</span>
+                </div>
+                <div class="requirement-item" id="lowercaseValidation">
+                    <i class="fas fa-times" id="lowercaseIcon"></i>
+                    <span>At least one lowercase letter (a-z)</span>
+                </div>
+                <div class="requirement-item" id="numberValidation">
+                    <i class="fas fa-times" id="numberIcon"></i>
+                    <span>At least one number (0-9)</span>
+                </div>
+                <div class="requirement-item" id="specialCharValidation">
+                    <i class="fas fa-times" id="specialCharIcon"></i>
+                    <span>At least one special character (@$!%*?&)</span>
+                </div>
+            </div>
+            
+            <button type="submit">Register</button>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Registration successful!
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const usernameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const usernameError = document.getElementById('usernameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Toggle password visibility
+            const passwordToggle = document.getElementById('passwordToggle');
+            const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
+            
+            passwordToggle.addEventListener('click', function() {
+                togglePasswordVisibility(passwordInput, passwordToggle);
+            });
+            
+            confirmPasswordToggle.addEventListener('click', function() {
+                togglePasswordVisibility(confirmPasswordInput, confirmPasswordToggle);
+            });
+            
+            function togglePasswordVisibility(input, toggle) {
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    toggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    input.type = 'password';
+                    toggle.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            }
+            
+            // Validate inputs
+            usernameInput.addEventListener('input', validateUsername);
+            emailInput.addEventListener('input', validateEmail);
+            passwordInput.addEventListener('input', validatePassword);
+            confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+            
+            function validateUsername() {
+                const username = usernameInput.value.trim();
+                
+                if (username === '') {
+                    usernameError.textContent = 'Username is required';
+                    usernameError.style.display = 'block';
+                    return false;
+                }
+                
+                if (username.length < 3) {
+                    usernameError.textContent = 'Username must be at least 3 characters';
+                    usernameError.style.display = 'block';
+                    return false;
+                }
+                
+                usernameError.style.display = 'none';
+                return true;
+            }
+            
+            function validateEmail() {
+                const email = emailInput.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (email === '') {
+                    emailError.textContent = 'Email is required';
+                    emailError.style.display = 'block';
+                    return false;
+                }
+                
+                if (!emailRegex.test(email)) {
+                    emailError.textContent = 'Please enter a valid email address';
+                    emailError.style.display = 'block';
+                    return false;
+                }
+                
+                emailError.style.display = 'none';
+                return true;
+            }
+            
+            function validatePassword() {
+                const password = passwordInput.value;
+                let isValid = true;
+                
+                // Check minimum length
+                if (password.length < 8) {
+                    showError('lengthIcon', 'Minimum 8 characters required');
+                    isValid = false;
+                } else {
+                    showSuccess('lengthIcon');
+                }
+                
+                // Check maximum length
+                if (password.length > 15) {
+                    showError('maxLengthIcon', 'Maximum 15 characters allowed');
+                    isValid = false;
+                } else {
+                    showSuccess('maxLengthIcon');
+                }
+                
+                // Check uppercase letters
+                if (!/[A-Z]/.test(password)) {
+                    showError('uppercaseIcon', 'At least one uppercase letter required');
+                    isValid = false;
+                } else {
+                    showSuccess('uppercaseIcon');
+                }
+                
+                // Check lowercase letters
+                if (!/[a-z]/.test(password)) {
+                    showError('lowercaseIcon', 'At least one lowercase letter required');
+                    isValid = false;
+                } else {
+                    showSuccess('lowercaseIcon');
+                }
+                
+                // Check numbers
+                if (!/[0-9]/.test(password)) {
+                    showError('numberIcon', 'At least one number required');
+                    isValid = false;
+                } else {
+                    showSuccess('numberIcon');
+                }
+                
+                // Check special characters
+                if (!/[@$!%*?&]/.test(password)) {
+                    showError('specialCharIcon', 'At least one special character (@$!%*?&) required');
+                    isValid = false;
+                } else {
+                    showSuccess('specialCharIcon');
+                }
+                
+                if (isValid) {
+                    passwordError.style.display = 'none';
+                }
+                
+                validateConfirmPassword();
+                return isValid;
+            }
+            
+            function validateConfirmPassword() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                
+                if (confirmPassword === '') {
+                    confirmPasswordError.style.display = 'none';
+                    return false;
+                }
+                
+                if (password !== confirmPassword) {
+                    confirmPasswordError.textContent = 'Passwords do not match';
+                    confirmPasswordError.style.display = 'block';
+                    return false;
+                } else {
+                    confirmPasswordError.style.display = 'none';
+                    return true;
+                }
+            }
+            
+            function showError(iconId, message) {
+                document.getElementById(iconId).className = 'fas fa-times';
+                document.getElementById(iconId).style.color = '#d93025';
+                passwordError.textContent = message;
+                passwordError.style.display = 'block';
+            }
+            
+            function showSuccess(iconId) {
+                document.getElementById(iconId).className = 'fas fa-check';
+                document.getElementById(iconId).style.color = '#0f9d58';
+            }
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const isUsernameValid = validateUsername();
+                const isEmailValid = validateEmail();
+                const isPasswordValid = validatePassword();
+                const isConfirmPasswordValid = validateConfirmPassword();
+                
+                if (isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+                    successMessage.style.display = 'block';
+                    usernameError.style.display = 'none';
+                    emailError.style.display = 'none';
+                    passwordError.style.display = 'none';
+                    confirmPasswordError.style.display = 'none';
+                    
+                    setTimeout(function() {
+                        form.reset();
+                        successMessage.style.display = 'none';
+                        const icons = ['lengthIcon', 'maxLengthIcon', 'uppercaseIcon', 
+                                      'lowercaseIcon', 'numberIcon', 'specialCharIcon'];
+                        icons.forEach(icon => {
+                            document.getElementById(icon).className = 'fas fa-times';
+                            document.getElementById(icon).style.color = '#d93025';
+                        });
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
